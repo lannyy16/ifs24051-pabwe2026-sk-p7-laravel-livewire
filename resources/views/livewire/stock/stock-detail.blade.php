@@ -2,7 +2,7 @@
     <a href="{{ route('stocks.index') }}" class="text-sm text-blue-700 hover:underline">← Kembali ke daftar</a>
 
     @if (session('status'))
-        <div role="status" class="my-3 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div class="my-3 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
     @endif
 
     <div class="mt-3 space-y-4 rounded-lg bg-white p-6 shadow">
@@ -67,14 +67,14 @@
             <form wire:submit="save" class="space-y-3">
                 <div>
                     <label for="sd-name" class="block text-sm font-medium">Nama</label>
-                    <input id="sd-name" type="text" wire:model="name" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <input id="sd-name" type="text" wire:model="name" aria-label="Nama barang" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error('name') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     @foreach ([['sku','SKU','text'],['unit','Satuan','text'],['quantity','Quantity','number'],['min_stock','Stok minimum','number'],['price','Harga (Rp)','number']] as [$f,$l,$t])
                         <div>
                             <label for="sd-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                            <input id="sd-{{ $f }}" type="{{ $t }}" @if($t==='number') min="0" step="any" @endif wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                            <input id="sd-{{ $f }}" type="{{ $t }}" @if($t==='number') min="0" step="any" @endif wire:model="{{ $f }}" aria-label="{{ $l }}" class="w-full rounded border border-slate-300 px-3 py-2">
                             @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                         </div>
                     @endforeach

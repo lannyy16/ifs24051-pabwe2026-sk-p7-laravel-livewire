@@ -2,7 +2,7 @@
     <h1 class="text-2xl font-bold">👤 Profil</h1>
 
     @if (session('status'))
-        <div role="status" class="rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div class="rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
     @endif
 
     <section class="rounded-lg bg-white p-6 shadow">
@@ -32,7 +32,7 @@
             @foreach ([['name','Nama','text'],['username','Username','text'],['email','Email','email']] as [$f,$l,$t])
                 <div>
                     <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="pf-{{ $f }}" type="{{ $t }}" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <input id="pf-{{ $f }}" type="{{ $t }}" wire:model="{{ $f }}" aria-label="{{ $l }}" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
             @endforeach
@@ -46,7 +46,7 @@
             @foreach ([['current_password','Password saat ini'],['password','Password baru'],['password_confirmation','Konfirmasi password baru']] as [$f,$l])
                 <div>
                     <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="pf-{{ $f }}" type="password" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <input id="pf-{{ $f }}" type="password" wire:model="{{ $f }}" aria-label="{{ $l }}" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
             @endforeach

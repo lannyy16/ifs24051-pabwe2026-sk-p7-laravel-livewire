@@ -10,20 +10,21 @@
     </div>
 
     @if (session('status'))
-        <div role="status" class="mb-4 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div class="mb-4 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
     @endif
 
     <form wire:submit="import" class="mb-4 flex flex-wrap items-center gap-2 rounded bg-white p-3 text-sm shadow">
-        <span class="font-medium">Import Excel:</span>
-        <input type="file" wire:model="importFile" accept=".xlsx,.xls" aria-label="Pilih file Excel untuk diimpor">
+        <label for="stock-import-file" class="font-medium">Import Excel:</label>
+        <input id="stock-import-file" type="file" wire:model="importFile" accept=".xlsx,.xls" aria-label="Pilih file Excel untuk diimpor">
         <button type="submit" class="rounded bg-slate-800 px-3 py-1 text-white">Import</button>
         @error('importFile') <span class="text-red-700">{{ $message }}</span> @enderror
     </form>
 
     <div class="mb-4 flex flex-wrap gap-2">
-        <input type="search" aria-label="Cari stok" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
+        <input id="stock-search" type="search" aria-label="Cari stok" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
                class="w-64 rounded border border-slate-300 px-3 py-2 text-sm">
-        <select aria-label="Filter status stok" wire:model.live="status" class="rounded border border-slate-300 px-3 py-2 text-sm">
+        <label for="stock-status" class="sr-only">Filter status stok</label>
+        <select id="stock-status" aria-label="Filter status stok" wire:model.live="status" aria-label="Filter status stok" class="rounded border border-slate-300 px-3 py-2 text-sm">
             <option value="">Semua status</option>
             @foreach ($statuses as $s)
                 <option value="{{ $s->value }}">{{ $s->label() }}</option>
@@ -31,7 +32,7 @@
         </select>
     </div>
 
-    <div class="overflow-x-auto rounded bg-white shadow" role="region" aria-label="Tabel stok barang" tabindex="0">
+    <div class="overflow-x-auto rounded bg-white shadow">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase text-slate-600">
             <tr>
@@ -62,8 +63,8 @@
                     <td class="px-3 py-2">{{ $stock->price !== null ? 'Rp '.number_format((float) $stock->price, 0, ',', '.') : '-' }}</td>
                     <td class="px-3 py-2"><span class="rounded-full px-2 py-1 text-xs {{ $stock->status->badgeClass() }}">{{ $stock->status->label() }}</span></td>
                     <td class="px-3 py-2 text-right">
-                        <button wire:click="edit({{ $stock->id }})" aria-label="Edit {{ $stock->name }}" class="px-2 py-1 text-blue-700 hover:underline">Edit</button>
-                        <button wire:click="delete({{ $stock->id }})" aria-label="Hapus {{ $stock->name }}" wire:confirm="Hapus stok ini?" class="ml-1 px-2 py-1 text-red-700 hover:underline">Hapus</button>
+                        <button wire:click="edit({{ $stock->id }})" aria-label="Edit {{ $stock->name }}" class="text-blue-700 hover:underline">Edit</button>
+                        <button wire:click="delete({{ $stock->id }})" aria-label="Hapus {{ $stock->name }}" wire:confirm="Hapus stok ini?" class="ml-2 text-red-700 hover:underline">Hapus</button>
                     </td>
                 </tr>
             @empty
@@ -83,44 +84,44 @@
 
                 <div>
                     <label for="sl-name" class="block text-sm font-medium">Nama</label>
-                    <input id="sl-name" type="text" wire:model="name" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <input id="sl-name" type="text" wire:model="name" aria-label="Nama barang" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error('name') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label for="sl-sku" class="block text-sm font-medium">SKU</label>
-                        <input id="sl-sku" type="text" wire:model="sku" class="w-full rounded border border-slate-300 px-3 py-2">
+                        <input id="sl-sku" type="text" wire:model="sku" aria-label="SKU barang" class="w-full rounded border border-slate-300 px-3 py-2">
                         @error('sku') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label for="sl-unit" class="block text-sm font-medium">Satuan</label>
-                        <input id="sl-unit" type="text" wire:model="unit" class="w-full rounded border border-slate-300 px-3 py-2">
+                        <input id="sl-unit" type="text" wire:model="unit" aria-label="Satuan barang" class="w-full rounded border border-slate-300 px-3 py-2">
                         @error('unit') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label for="sl-quantity" class="block text-sm font-medium">Quantity</label>
-                        <input id="sl-quantity" type="number" min="0" wire:model="quantity" class="w-full rounded border border-slate-300 px-3 py-2">
+                        <input id="sl-quantity" type="number" min="0" wire:model="quantity" aria-label="Quantity barang" class="w-full rounded border border-slate-300 px-3 py-2">
                         @error('quantity') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
                     <div>
                         <label for="sl-min_stock" class="block text-sm font-medium">Stok minimum</label>
-                        <input id="sl-min_stock" type="number" min="0" wire:model="min_stock" class="w-full rounded border border-slate-300 px-3 py-2">
+                        <input id="sl-min_stock" type="number" min="0" wire:model="min_stock" aria-label="Stok minimum" class="w-full rounded border border-slate-300 px-3 py-2">
                         @error('min_stock') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                     </div>
                 </div>
                 <div>
                     <label for="sl-price" class="block text-sm font-medium">Harga (Rp)</label>
-                    <input id="sl-price" type="number" min="0" step="0.01" wire:model="price" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <input id="sl-price" type="number" min="0" step="0.01" wire:model="price" aria-label="Harga barang" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error('price') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label for="sl-description" class="block text-sm font-medium">Deskripsi (Markdown)</label>
-                    <textarea id="sl-description" wire:model="description" rows="4" class="w-full rounded border border-slate-300 px-3 py-2 font-mono text-sm"></textarea>
+                    <textarea id="sl-description" wire:model="description" aria-label="Deskripsi barang" rows="4" class="w-full rounded border border-slate-300 px-3 py-2 font-mono text-sm"></textarea>
                     @error('description') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label for="sl-cover" class="block text-sm font-medium">Cover (opsional)</label>
-                    <input id="sl-cover" type="file" wire:model="cover" accept="image/*">
+                    <input id="sl-cover" type="file" wire:model="cover" accept="image/*" aria-label="Pilih gambar cover barang">
                     @error('cover') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
                 <p class="text-xs text-slate-600">Status (tersedia / menipis / habis) dihitung otomatis dari quantity dan stok minimum.</p>
@@ -142,12 +143,12 @@
                 <form wire:submit="generateAi" class="flex flex-wrap items-end gap-2">
                     <div class="flex-1">
                         <label for="sl-aiPrompt" class="block text-sm font-medium">Deskripsikan inventaris</label>
-                        <input id="sl-aiPrompt" type="text" wire:model="aiPrompt" placeholder="mis. bahan baku warung kopi"
+                        <input id="sl-aiPrompt" type="text" wire:model="aiPrompt" aria-label="Deskripsi inventaris untuk AI" placeholder="mis. bahan baku warung kopi"
                                class="w-full rounded border border-slate-300 px-3 py-2">
                     </div>
                     <div>
                         <label for="sl-aiCount" class="block text-sm font-medium">Jumlah</label>
-                        <input id="sl-aiCount" type="number" min="1" max="20" wire:model="aiCount" class="w-20 rounded border border-slate-300 px-3 py-2">
+                        <input id="sl-aiCount" type="number" min="1" max="20" wire:model="aiCount" aria-label="Jumlah item yang akan dibuat" class="w-20 rounded border border-slate-300 px-3 py-2">
                     </div>
                     <button type="submit" class="rounded bg-purple-700 px-4 py-2 text-white" wire:loading.attr="disabled" wire:target="generateAi">
                         <span wire:loading.remove wire:target="generateAi">Generate</span>

@@ -4,7 +4,7 @@
     <input type="search" aria-label="Cari user" wire:model.live.debounce.300ms="search" placeholder="Cari nama / username / email…"
            class="mb-4 w-72 rounded border border-slate-300 px-3 py-2 text-sm">
 
-    <div class="overflow-x-auto rounded bg-white shadow" role="region" aria-label="Tabel daftar user" tabindex="0">
+    <div class="overflow-x-auto rounded bg-white shadow">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase text-slate-600">
             <tr><th class="px-3 py-2">Nama</th><th class="px-3 py-2">Username</th><th class="px-3 py-2">Email</th>

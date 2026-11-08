@@ -4,9 +4,10 @@
     <p class="mb-4 text-sm text-slate-600">{{ '@'.$user->username }} · mode hanya-baca</p>
 
     <div class="mb-4 flex flex-wrap gap-2">
-        <input type="search" aria-label="Cari stok" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
+        <input id="admin-stock-search" type="search" aria-label="Cari stok" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
                class="w-64 rounded border border-slate-300 px-3 py-2 text-sm">
-        <select aria-label="Filter status stok" wire:model.live="status" class="rounded border border-slate-300 px-3 py-2 text-sm">
+        <label for="admin-stock-status" class="sr-only">Filter status stok</label>
+        <select id="admin-stock-status" aria-label="Filter status stok" wire:model.live="status" class="rounded border border-slate-300 px-3 py-2 text-sm">
             <option value="">Semua status</option>
             @foreach ($statuses as $s)
                 <option value="{{ $s->value }}">{{ $s->label() }}</option>
@@ -14,7 +15,7 @@
         </select>
     </div>
 
-    <div class="overflow-x-auto rounded bg-white shadow" role="region" aria-label="Tabel stok milik user" tabindex="0">
+    <div class="overflow-x-auto rounded bg-white shadow">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase text-slate-600">
             <tr><th class="px-3 py-2">Nama</th><th class="px-3 py-2">SKU</th><th class="px-3 py-2">Qty</th>
