@@ -2,7 +2,7 @@
     <a href="{{ route('stocks.index') }}" class="text-sm text-blue-700 hover:underline">← Kembali ke daftar</a>
 
     @if (session('status'))
-        <div class="my-3 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div role="status" class="my-3 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
     @endif
 
     <div class="mt-3 space-y-4 rounded-lg bg-white p-6 shadow">

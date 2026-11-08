@@ -35,7 +35,7 @@
                 <button id="logout-button" class="w-full rounded bg-red-700 px-3 py-2 text-sm text-white hover:bg-red-800">Keluar</button>
             </form>
         </aside>
-        <main class="flex-1 p-4 md:p-8">
+        <main id="konten-utama" class="flex-1 p-4 md:p-8">
             <div class="mb-4 flex items-center justify-between md:hidden">
                 <span class="font-bold">📦 {{ config('app.name') }}</span>
                 <div class="flex gap-3 text-sm">

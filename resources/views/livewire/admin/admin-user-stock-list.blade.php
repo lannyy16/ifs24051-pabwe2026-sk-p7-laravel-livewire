@@ -14,7 +14,7 @@
         </select>
     </div>
 
-    <div class="overflow-x-auto rounded bg-white shadow">
+    <div class="overflow-x-auto rounded bg-white shadow" role="region" aria-label="Tabel stok milik user" tabindex="0">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase text-slate-600">
             <tr><th class="px-3 py-2">Nama</th><th class="px-3 py-2">SKU</th><th class="px-3 py-2">Qty</th>

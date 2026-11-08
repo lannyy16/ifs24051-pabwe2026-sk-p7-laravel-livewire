@@ -4,13 +4,13 @@
         <div class="flex flex-wrap gap-2 text-sm">
             <button wire:click="create" id="btn-create" class="rounded bg-blue-700 px-3 py-2 text-white hover:bg-blue-800">+ Tambah</button>
             <button wire:click="openAi" id="btn-ai" class="rounded bg-purple-700 px-3 py-2 text-white hover:bg-purple-800">✨ Generate AI</button>
-            <button wire:click="export" class="rounded bg-green-700 px-3 py-2 text-white hover:bg-green-800">⬇ Export Excel</button>
+            <button wire:click="export" class="rounded bg-green-800 px-3 py-2 text-white hover:bg-green-900">⬇ Export Excel</button>
             <button wire:click="downloadTemplate" class="rounded bg-slate-600 px-3 py-2 text-white hover:bg-slate-700">Template</button>
         </div>
     </div>
 
     @if (session('status'))
-        <div class="mb-4 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div role="status" class="mb-4 rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
     @endif
 
     <form wire:submit="import" class="mb-4 flex flex-wrap items-center gap-2 rounded bg-white p-3 text-sm shadow">
@@ -31,7 +31,7 @@
         </select>
     </div>
 
-    <div class="overflow-x-auto rounded bg-white shadow">
+    <div class="overflow-x-auto rounded bg-white shadow" role="region" aria-label="Tabel stok barang" tabindex="0">
         <table class="w-full text-left text-sm">
             <thead class="bg-slate-50 text-xs uppercase text-slate-600">
             <tr>
@@ -62,8 +62,8 @@
                     <td class="px-3 py-2">{{ $stock->price !== null ? 'Rp '.number_format((float) $stock->price, 0, ',', '.') : '-' }}</td>
                     <td class="px-3 py-2"><span class="rounded-full px-2 py-1 text-xs {{ $stock->status->badgeClass() }}">{{ $stock->status->label() }}</span></td>
                     <td class="px-3 py-2 text-right">
-                        <button wire:click="edit({{ $stock->id }})" aria-label="Edit {{ $stock->name }}" class="text-blue-700 hover:underline">Edit</button>
-                        <button wire:click="delete({{ $stock->id }})" aria-label="Hapus {{ $stock->name }}" wire:confirm="Hapus stok ini?" class="ml-2 text-red-700 hover:underline">Hapus</button>
+                        <button wire:click="edit({{ $stock->id }})" aria-label="Edit {{ $stock->name }}" class="px-2 py-1 text-blue-700 hover:underline">Edit</button>
+                        <button wire:click="delete({{ $stock->id }})" aria-label="Hapus {{ $stock->name }}" wire:confirm="Hapus stok ini?" class="ml-1 px-2 py-1 text-red-700 hover:underline">Hapus</button>
                     </td>
                 </tr>
             @empty
