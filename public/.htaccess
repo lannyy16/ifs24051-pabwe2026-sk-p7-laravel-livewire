@@ -1,3 +1,14 @@
+# Cache panjang untuk aset hasil build Vite (nama file sudah ber-hash)
+<IfModule mod_headers.c>
+    <If "%{REQUEST_URI} =~ m#^/build/assets/#">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </If>
+</IfModule>
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/svg+xml "access plus 1 month"
+</IfModule>
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -22,10 +33,4 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
-</IfModule>
-
-<IfModule mod_headers.c>
-    <FilesMatch "\.(css|js|woff2?|ttf|otf|svg|png|jpe?g|gif|webp|avif|ico)$">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-    </FilesMatch>
 </IfModule>

@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ $description ?? 'Aplikasi pengelolaan stok barang: catat, cari, impor/ekspor Excel, dan buat daftar stok dengan bantuan AI.' }}">
+    <meta name="description" content="Aplikasi inventaris stok barang: kelola stok, impor/ekspor Excel, dan generate item dengan AI.">
+    <meta name="theme-color" content="#0f172a">
     <title>{{ $title ?? config('app.name') }} · {{ config('app.name') }}</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     @stack('styles')
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
@@ -30,7 +32,7 @@
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button id="logout-button" class="w-full rounded bg-red-600 px-3 py-2 text-sm text-white hover:bg-red-700">Keluar</button>
+                <button id="logout-button" class="w-full rounded bg-red-700 px-3 py-2 text-sm text-white hover:bg-red-800">Keluar</button>
             </form>
         </aside>
         <main class="flex-1 p-4 md:p-8">
@@ -51,5 +53,6 @@
     </main>
 @endauth
 @stack('scripts')
+@livewireScripts
 </body>
 </html>

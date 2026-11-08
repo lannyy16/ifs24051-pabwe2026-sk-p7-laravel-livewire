@@ -1,12 +1,12 @@
 <div>
-    <a href="{{ route('admin.users') }}" class="text-sm text-blue-600 hover:underline">← Kembali ke daftar user</a>
+    <a href="{{ route('admin.users') }}" class="text-sm text-blue-700 hover:underline">← Kembali ke daftar user</a>
     <h1 class="mb-1 mt-2 text-2xl font-bold">Stok milik {{ $user->name }}</h1>
     <p class="mb-4 text-sm text-slate-600">{{ '@'.$user->username }} · mode hanya-baca</p>
 
     <div class="mb-4 flex flex-wrap gap-2">
-        <input type="search" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
-               aria-label="Cari nama atau SKU" class="w-64 rounded border border-slate-300 px-3 py-2 text-sm">
-        <select wire:model.live="status" aria-label="Filter status stok" class="rounded border border-slate-300 px-3 py-2 text-sm">
+        <input type="search" aria-label="Cari stok" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
+               class="w-64 rounded border border-slate-300 px-3 py-2 text-sm">
+        <select aria-label="Filter status stok" wire:model.live="status" class="rounded border border-slate-300 px-3 py-2 text-sm">
             <option value="">Semua status</option>
             @foreach ($statuses as $s)
                 <option value="{{ $s->value }}">{{ $s->label() }}</option>

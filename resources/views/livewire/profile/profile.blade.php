@@ -14,8 +14,7 @@
                 <div class="flex h-20 w-20 items-center justify-center rounded-full bg-slate-200 text-2xl">👤</div>
             @endif
             <form wire:submit="savePhoto" class="space-y-2 text-sm">
-                <label for="profile-photo" class="sr-only">Pilih foto profil</label>
-                <input id="profile-photo" type="file" wire:model="photo" accept="image/*">
+                <input type="file" wire:model="photo" accept="image/*" aria-label="Pilih foto profil">
                 @error('photo') <p class="text-red-700">{{ $message }}</p> @enderror
                 <div class="flex gap-2">
                     <button class="rounded bg-slate-800 px-3 py-1 text-white">Unggah</button>
@@ -32,12 +31,12 @@
         <form wire:submit="saveProfile" class="space-y-3">
             @foreach ([['name','Nama','text'],['username','Username','text'],['email','Email','email']] as [$f,$l,$t])
                 <div>
-                    <label for="profile-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="profile-{{ $f }}" type="{{ $t }}" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
+                    <input id="pf-{{ $f }}" type="{{ $t }}" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
             @endforeach
-            <button class="rounded bg-blue-600 px-4 py-2 text-white">Simpan</button>
+            <button class="rounded bg-blue-700 px-4 py-2 text-white">Simpan</button>
         </form>
     </section>
 
@@ -46,12 +45,12 @@
         <form wire:submit="savePassword" class="space-y-3">
             @foreach ([['current_password','Password saat ini'],['password','Password baru'],['password_confirmation','Konfirmasi password baru']] as [$f,$l])
                 <div>
-                    <label for="profile-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="profile-{{ $f }}" type="password" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
+                    <input id="pf-{{ $f }}" type="password" wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
                 </div>
             @endforeach
-            <button class="rounded bg-blue-600 px-4 py-2 text-white">Ubah password</button>
+            <button class="rounded bg-blue-700 px-4 py-2 text-white">Ubah password</button>
         </form>
     </section>
 </div>

@@ -1,8 +1,8 @@
 <div>
     <h1 class="mb-4 text-2xl font-bold">👥 Daftar User</h1>
 
-    <input type="search" wire:model.live.debounce.300ms="search" placeholder="Cari nama / username / email…"
-           aria-label="Cari nama, username, atau email" class="mb-4 w-72 rounded border border-slate-300 px-3 py-2 text-sm">
+    <input type="search" aria-label="Cari user" wire:model.live.debounce.300ms="search" placeholder="Cari nama / username / email…"
+           class="mb-4 w-72 rounded border border-slate-300 px-3 py-2 text-sm">
 
     <div class="overflow-x-auto rounded bg-white shadow">
         <table class="w-full text-left text-sm">
@@ -19,7 +19,7 @@
                     <td class="px-3 py-2">{{ $u->role }}</td>
                     <td class="px-3 py-2 text-center">{{ $u->stocks_count }}</td>
                     <td class="px-3 py-2 text-right">
-                        <a href="{{ route('admin.users.stocks', $u) }}" class="text-blue-600 hover:underline">Lihat stok</a>
+                        <a href="{{ route('admin.users.stocks', $u) }}" class="text-blue-700 hover:underline">Lihat stok</a>
                     </td>
                 </tr>
             @endforeach

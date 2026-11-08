@@ -13,5 +13,5 @@
         <button id="register-submit" type="submit" class="w-full rounded bg-slate-900 px-4 py-2 text-white hover:bg-slate-700">Daftar</button>
     </form>
 
-    <p class="mt-4 text-center text-sm">Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-600 underline">Masuk</a></p>
+    <p class="mt-4 text-center text-sm">Sudah punya akun? <a href="{{ route('login') }}" class="text-blue-700 underline">Masuk</a></p>
 </div>
