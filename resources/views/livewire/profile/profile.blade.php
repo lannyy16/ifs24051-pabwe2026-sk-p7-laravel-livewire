@@ -14,7 +14,8 @@
                 <div class="flex h-20 w-20 items-center justify-center rounded-full bg-slate-200 text-2xl">👤</div>
             @endif
             <form wire:submit="savePhoto" class="space-y-2 text-sm">
-                <input type="file" wire:model="photo" accept="image/*" aria-label="Pilih foto profil">
+                <label for="profile-photo" class="block font-medium">Pilih foto profil</label>
+                <input id="profile-photo" type="file" wire:model="photo" accept="image/*" aria-label="Pilih foto profil">
                 @error('photo') <p class="text-red-700">{{ $message }}</p> @enderror
                 <div class="flex gap-2">
                     <button class="rounded bg-slate-800 px-3 py-1 text-white">Unggah</button>

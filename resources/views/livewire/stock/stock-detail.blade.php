@@ -13,7 +13,8 @@
                 <div class="flex h-32 w-32 items-center justify-center rounded bg-slate-100 text-4xl">📦</div>
             @endif
             <form wire:submit="saveCover" class="space-y-2 text-sm">
-                <input type="file" wire:model="cover" accept="image/*" aria-label="Pilih gambar cover">
+                <label for="detail-cover" class="block font-medium">Pilih gambar cover</label>
+                <input id="detail-cover" type="file" wire:model="cover" accept="image/*" aria-label="Pilih gambar cover">
                 @error('cover') <p class="text-red-700">{{ $message }}</p> @enderror
                 <div class="flex gap-2">
                     <button type="submit" class="rounded bg-slate-800 px-3 py-1 text-white">Unggah cover</button>
