@@ -24,9 +24,16 @@ class StockExcelServiceTest extends TestCase
 
     public function test_export_has_headers_and_rows(): void
     {
-        $stock = Stock::factory()->create(['name' => 'Beras', 'sku' => 'B1', 'quantity' => 8]);
+        $stock = Stock::factory()->create([
+            'name' => 'Beras',
+            'sku' => 'B1',
+            'quantity' => 8,
+        ]);
 
-        $path = $this->tmp((new StockExcelService)->export(collect([$stock])));
+        $path = $this->tmp(
+            (new StockExcelService)->export(collect([$stock]))
+        );
+
         $rows = IOFactory::load($path)->getActiveSheet()->toArray();
         unlink($path);
 
@@ -37,7 +44,10 @@ class StockExcelServiceTest extends TestCase
 
     public function test_export_empty_collection(): void
     {
-        $path = $this->tmp((new StockExcelService)->export(collect()));
+        $path = $this->tmp(
+            (new StockExcelService)->export(collect())
+        );
+
         $rows = IOFactory::load($path)->getActiveSheet()->toArray();
         unlink($path);
 
@@ -48,6 +58,7 @@ class StockExcelServiceTest extends TestCase
     {
         $service = new StockExcelService;
         $path = $this->tmp($service->template());
+
         $rows = $service->import($path);
         unlink($path);
 
@@ -59,12 +70,14 @@ class StockExcelServiceTest extends TestCase
     public function test_import_accepts_qty_alias_skips_blank_names_and_defaults(): void
     {
         $sheet = new Spreadsheet;
+
         $sheet->getActiveSheet()->fromArray([
             ['Name', 'QTY'],
             ['Pensil', 4],
             ['', 9],
             [null, null],
         ]);
+
         $path = tempnam(sys_get_temp_dir(), 'xl');
         (new Xlsx($sheet))->save($path);
 
@@ -72,7 +85,16 @@ class StockExcelServiceTest extends TestCase
         unlink($path);
 
         $this->assertCount(1, $rows);
-        $this->assertSame(['name' => 'Pensil', 'sku' => null, 'description' => null, 'quantity' => 4, 'unit' => null, 'price' => null, 'min_stock' => 5], $rows[0]);
+
+        $this->assertSame([
+            'name' => 'Pensil',
+            'sku' => null,
+            'description' => null,
+            'quantity' => 4,
+            'unit' => null,
+            'price' => null,
+            'min_stock' => 5,
+        ], $rows[0]);
     }
 
     public function test_import_empty_sheet(): void
@@ -80,7 +102,37 @@ class StockExcelServiceTest extends TestCase
         $path = tempnam(sys_get_temp_dir(), 'xl');
         (new Xlsx(new Spreadsheet))->save($path);
 
-        $this->assertSame([], (new StockExcelService)->import($path));
+        $this->assertSame(
+            [],
+            (new StockExcelService)->import($path)
+        );
+
         unlink($path);
+    }
+
+    public function test_import_throws_when_name_header_is_missing(): void
+    {
+        $sheet = new Spreadsheet;
+
+        $sheet->getActiveSheet()->fromArray([
+            ['sku', 'quantity'],
+            ['BRG001', 10],
+        ]);
+
+        $path = tempnam(sys_get_temp_dir(), 'xl');
+        (new Xlsx($sheet))->save($path);
+
+        try {
+            $this->expectException(\UnexpectedValueException::class);
+            $this->expectExceptionMessage(
+                'Kolom wajib name tidak ditemukan.'
+            );
+
+            (new StockExcelService)->import($path);
+        } finally {
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
     }
 }

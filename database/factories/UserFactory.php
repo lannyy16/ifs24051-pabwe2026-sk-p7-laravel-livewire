@@ -1,3 +1,4 @@
+
 <?php
 
 namespace Database\Factories;
@@ -18,22 +19,34 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'username' => fake()->unique()->userName(),
+
+            'username' => fake()
+                ->unique()
+                ->regexify('[a-zA-Z][a-zA-Z0-9_-]{2,49}'),
+
             'email' => fake()->unique()->safeEmail(),
+
             'email_verified_at' => now(),
+
             'password' => static::$password ??= Hash::make('password'),
+
             'role' => User::ROLE_MEMBER,
+
             'remember_token' => Str::random(10),
         ];
     }
 
     public function admin(): static
     {
-        return $this->state(fn () => ['role' => User::ROLE_ADMIN]);
+        return $this->state(fn () => [
+            'role' => User::ROLE_ADMIN,
+        ]);
     }
 
     public function member(): static
     {
-        return $this->state(fn () => ['role' => User::ROLE_MEMBER]);
+        return $this->state(fn () => [
+            'role' => User::ROLE_MEMBER,
+        ]);
     }
 }

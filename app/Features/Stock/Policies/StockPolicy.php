@@ -9,7 +9,8 @@ class StockPolicy
 {
     public function view(User $user, Stock $stock): bool
     {
-        return $user->isMember() && $stock->user_id === $user->id;
+        return $user->isMember()
+            && (int) $stock->user_id === (int) $user->getKey();
     }
 
     public function update(User $user, Stock $stock): bool
