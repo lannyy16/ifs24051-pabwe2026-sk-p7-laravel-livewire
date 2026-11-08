@@ -83,17 +83,37 @@
                 <div>
                     <span class="block text-sm font-medium">Deskripsi (Markdown)</span>
                     <div wire:ignore
-                         x-data="{ editor: null }"
-                         x-init="
-                            editor = new toastui.Editor({
-                                el: $refs.editorEl,
-                                height: '320px',
-                                initialEditType: 'markdown',
-                                previewStyle: 'tab',
-                                initialValue: $wire.description ?? '',
-                                events: { change: () => { $wire.description = editor.getMarkdown(); } },
-                            });
-                         ">
+                         x-data="{
+                            editor: null,
+                            async boot() {
+                                if (! window.toastui) {
+                                    await new Promise((resolve) => {
+                                        const css = document.createElement('link');
+                                        css.rel = 'stylesheet';
+                                        css.href = 'https://uicdn.toast.com/editor/latest/toastui-editor.min.css';
+                                        css.onload = resolve;
+                                        css.onerror = resolve;
+                                        document.head.appendChild(css);
+                                    });
+                                    await new Promise((resolve, reject) => {
+                                        const js = document.createElement('script');
+                                        js.src = 'https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js';
+                                        js.onload = resolve;
+                                        js.onerror = reject;
+                                        document.head.appendChild(js);
+                                    });
+                                }
+                                this.editor = new toastui.Editor({
+                                    el: this.$refs.editorEl,
+                                    height: '320px',
+                                    initialEditType: 'markdown',
+                                    previewStyle: 'tab',
+                                    initialValue: this.$wire.description ?? '',
+                                    events: { change: () => { this.$wire.description = this.editor.getMarkdown(); } },
+                                });
+                            },
+                         }"
+                         x-init="boot()">
                         <div x-ref="editorEl"></div>
                     </div>
                     @error('description') <p class="text-sm text-red-700">{{ $message }}</p> @enderror
@@ -107,10 +127,3 @@
         @endif
     </div>
 </div>
-
-@push('styles')
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-@endpush
-@push('scripts')
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-@endpush
