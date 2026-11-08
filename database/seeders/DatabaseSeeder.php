@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
                 ['user_id' => $member->id, 'sku' => $sku],
                 [
                     'name' => $name,
-                    'description' => "**{$name}** — contoh data awal.",
+                    'description' => "**{$name}** - contoh data awal.",
                     'quantity' => $qty,
                     'unit' => $unit,
                     'price' => $price,
