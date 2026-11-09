@@ -1,57 +1,157 @@
+
 <div class="mx-auto max-w-2xl space-y-6">
     <h1 class="text-2xl font-bold">👤 Profil</h1>
 
     @if (session('status'))
-        <div class="rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800">{{ session('status') }}</div>
+        <div class="rounded border border-green-300 bg-green-50 px-4 py-2 text-sm text-green-800" role="status">
+            {{ session('status') }}
+        </div>
     @endif
 
+    {{-- Foto profil --}}
     <section class="rounded-lg bg-white p-6 shadow">
         <h2 class="mb-3 font-semibold">Foto profil</h2>
+
         <div class="flex items-center gap-4">
             @if ($user->profilePhotoUrl())
-                <img src="{{ $user->profilePhotoUrl() }}" class="h-20 w-20 rounded-full object-cover" alt="Foto">
+                <img
+                    src="{{ $user->profilePhotoUrl() }}"
+                    class="h-20 w-20 rounded-full object-cover"
+                    alt="Foto profil pengguna"
+                >
             @else
-                <div class="flex h-20 w-20 items-center justify-center rounded-full bg-slate-200 text-2xl">👤</div>
+                <div
+                    class="flex h-20 w-20 items-center justify-center rounded-full bg-slate-200 text-2xl"
+                    aria-hidden="true"
+                >
+                    👤
+                </div>
             @endif
+
             <form wire:submit="savePhoto" class="space-y-2 text-sm">
-                <label for="profile-photo" class="block font-medium">Pilih foto profil</label>
-                <input id="profile-photo" type="file" wire:model="photo" accept="image/*" aria-label="Pilih foto profil">
-                @error('photo') <p class="text-red-700">{{ $message }}</p> @enderror
+                <label for="profile-photo" class="block font-medium">
+                    Pilih foto profil
+                </label>
+
+                <input
+                    id="profile-photo"
+                    name="photo"
+                    type="file"
+                    wire:model="photo"
+                    accept="image/*"
+                >
+
+                @error('photo')
+                    <p class="text-red-700" role="alert">{{ $message }}</p>
+                @enderror
+
                 <div class="flex gap-2">
-                    <button class="rounded bg-slate-800 px-3 py-1 text-white">Unggah</button>
+                    <button
+                        type="submit"
+                        class="rounded bg-slate-800 px-3 py-1 text-white"
+                    >
+                        Unggah
+                    </button>
+
                     @if ($user->profile_photo_path)
-                        <button type="button" wire:click="removePhoto" class="rounded bg-red-100 px-3 py-1 text-red-700">Hapus</button>
+                        <button
+                            type="button"
+                            wire:click="removePhoto"
+                            class="rounded bg-red-100 px-3 py-1 text-red-700"
+                        >
+                            Hapus
+                        </button>
                     @endif
                 </div>
             </form>
         </div>
     </section>
 
+    {{-- Data diri --}}
     <section class="rounded-lg bg-white p-6 shadow">
         <h2 class="mb-3 font-semibold">Data diri</h2>
+
         <form wire:submit="saveProfile" class="space-y-3">
-            @foreach ([['name','Nama','text'],['username','Username','text'],['email','Email','email']] as [$f,$l,$t])
+            @foreach ([
+                ['name', 'Nama', 'text'],
+                ['username', 'Username', 'text'],
+                ['email', 'Email', 'email'],
+            ] as [$f, $l, $t])
                 <div>
-                    <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="pf-{{ $f }}" type="{{ $t }}" wire:model="{{ $f }}" aria-label="{{ $l }}" class="w-full rounded border border-slate-300 px-3 py-2">
-                    @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
+                    <label
+                        for="pf-{{ $f }}"
+                        class="block text-sm font-medium"
+                    >
+                        {{ $l }}
+                    </label>
+
+                    <input
+                        id="pf-{{ $f }}"
+                        name="{{ $f }}"
+                        type="{{ $t }}"
+                        wire:model="{{ $f }}"
+                        autocomplete="{{ $f === 'name' ? 'name' : ($f === 'username' ? 'username' : 'email') }}"
+                        class="w-full rounded border border-slate-300 px-3 py-2"
+                    >
+
+                    @error($f)
+                        <p class="text-sm text-red-700" role="alert">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
             @endforeach
-            <button class="rounded bg-blue-700 px-4 py-2 text-white">Simpan</button>
+
+            <button
+                type="submit"
+                class="rounded bg-blue-700 px-4 py-2 text-white"
+            >
+                Simpan
+            </button>
         </form>
     </section>
 
+    {{-- Ubah password --}}
     <section class="rounded-lg bg-white p-6 shadow">
         <h2 class="mb-3 font-semibold">Ubah password</h2>
+
         <form wire:submit="savePassword" class="space-y-3">
-            @foreach ([['current_password','Password saat ini'],['password','Password baru'],['password_confirmation','Konfirmasi password baru']] as [$f,$l])
+            @foreach ([
+                ['current_password', 'Password saat ini', 'current-password'],
+                ['password', 'Password baru', 'new-password'],
+                ['password_confirmation', 'Konfirmasi password baru', 'new-password'],
+            ] as [$f, $l, $autocomplete])
                 <div>
-                    <label for="pf-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
-                    <input id="pf-{{ $f }}" type="password" wire:model="{{ $f }}" aria-label="{{ $l }}" class="w-full rounded border border-slate-300 px-3 py-2">
-                    @error($f) <p class="text-sm text-red-700">{{ $message }}</p> @enderror
+                    <label
+                        for="pf-{{ $f }}"
+                        class="block text-sm font-medium"
+                    >
+                        {{ $l }}
+                    </label>
+
+                    <input
+                        id="pf-{{ $f }}"
+                        name="{{ $f }}"
+                        type="password"
+                        wire:model="{{ $f }}"
+                        autocomplete="{{ $autocomplete }}"
+                        class="w-full rounded border border-slate-300 px-3 py-2"
+                    >
+
+                    @error($f)
+                        <p class="text-sm text-red-700" role="alert">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
             @endforeach
-            <button class="rounded bg-blue-700 px-4 py-2 text-white">Ubah password</button>
+
+            <button
+                type="submit"
+                class="rounded bg-blue-700 px-4 py-2 text-white"
+            >
+                Ubah password
+            </button>
         </form>
     </section>
 </div>
