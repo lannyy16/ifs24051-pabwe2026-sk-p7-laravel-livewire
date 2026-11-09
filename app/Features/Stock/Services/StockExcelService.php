@@ -36,8 +36,25 @@ class StockExcelService
      */
     public function import(string $path): array
     {
-        $sheet = IOFactory::load($path)->getActiveSheet();
+        $reader = null;
+
+        foreach (['Xlsx', 'Xls'] as $readerType) {
+            $candidate = IOFactory::createReader($readerType);
+
+            if ($candidate->canRead($path)) {
+                $reader = $candidate;
+                break;
+            }
+        }
+
+        if ($reader === null) {
+            throw new \InvalidArgumentException('File Excel tidak valid atau format tidak didukung.');
+        }
+
+        $spreadsheet = $reader->load($path);
+        $sheet = $spreadsheet->getActiveSheet();
         $data = $sheet->toArray(null, true, true, false);
+        $spreadsheet->disconnectWorksheets();
 
         $header = array_map(fn ($h) => strtolower(trim((string) $h)), array_shift($data) ?? []);
         $header = array_map(fn ($h) => $h === 'qty' ? 'quantity' : $h, $header);

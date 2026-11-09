@@ -17,7 +17,7 @@ class EnsureStockOwnershipMiddlewareTest extends TestCase
 {
     use RefreshDatabase;
 
-    private function run(?User $user, mixed $stockParam)
+    private function callMiddleware(?User $user, mixed $stockParam)
     {
         $request = Request::create('/stocks/1');
         $request->setUserResolver(fn () => $user);
@@ -34,8 +34,8 @@ class EnsureStockOwnershipMiddlewareTest extends TestCase
         $user = User::factory()->create();
         $stock = Stock::factory()->create(['user_id' => $user->id]);
 
-        $this->assertSame('ok', $this->run($user, $stock)->getContent());
-        $this->assertSame('ok', $this->run($user, (string) $stock->id)->getContent());
+        $this->assertSame('ok', $this->callMiddleware($user, $stock)->getContent());
+        $this->assertSame('ok', $this->callMiddleware($user, (string) $stock->id)->getContent());
     }
 
     public function test_non_owner_is_forbidden(): void
@@ -43,18 +43,18 @@ class EnsureStockOwnershipMiddlewareTest extends TestCase
         $stock = Stock::factory()->create();
 
         $this->expectException(HttpException::class);
-        $this->run(User::factory()->create(), $stock);
+        $this->callMiddleware(User::factory()->create(), $stock);
     }
 
     public function test_guest_is_forbidden(): void
     {
         $this->expectException(HttpException::class);
-        $this->run(null, Stock::factory()->create());
+        $this->callMiddleware(null, Stock::factory()->create());
     }
 
     public function test_unknown_stock_is_not_found(): void
     {
         $this->expectException(ModelNotFoundException::class);
-        $this->run(User::factory()->create(), '999999');
+        $this->callMiddleware(User::factory()->create(), '999999');
     }
 }
