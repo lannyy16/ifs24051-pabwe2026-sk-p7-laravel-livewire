@@ -4,6 +4,7 @@ namespace App\Features\Stock\Livewire;
 
 use App\Features\Ai\Contracts\AiClientInterface;
 use App\Features\Stock\Enums\StockStatus;
+use App\Features\Stock\Models\Stock;
 use App\Features\Stock\Services\StockExcelService;
 use App\Features\Stock\Services\StockService;
 use Illuminate\Support\Facades\Auth;

@@ -17,12 +17,7 @@ class EnsureStockOwnership
             $stock = Stock::query()->findOrFail($stock);
         }
 
-        $user = $request->user();
-
-        if (
-            ! $user ||
-            (int) $stock->user_id !== (int) $user->getKey()
-        ) {
+        if ($stock->user_id !== $request->user()?->id) {
             abort(403, 'Stok ini bukan milik Anda.');
         }
 

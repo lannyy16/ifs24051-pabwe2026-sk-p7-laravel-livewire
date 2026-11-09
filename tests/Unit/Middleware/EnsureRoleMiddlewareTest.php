@@ -11,24 +11,17 @@ use Tests\TestCase;
 
 class EnsureRoleMiddlewareTest extends TestCase
 {
-    private function invokeMiddleware(?User $user, string ...$roles)
+    private function run(?User $user, string ...$roles)
     {
         $request = Request::create('/x');
         $request->setUserResolver(fn () => $user);
 
-        return (new EnsureRole)->handle(
-            $request,
-            fn () => new Response('ok'),
-            ...$roles
-        );
+        return (new EnsureRole)->handle($request, fn () => new Response('ok'), ...$roles);
     }
 
     public function test_allows_matching_role(): void
     {
-        $response = $this->invokeMiddleware(
-            new User(['role' => 'admin']),
-            'admin'
-        );
+        $response = $this->run(new User(['role' => 'admin']), 'admin');
 
         $this->assertSame('ok', $response->getContent());
     }
@@ -36,17 +29,12 @@ class EnsureRoleMiddlewareTest extends TestCase
     public function test_rejects_other_role(): void
     {
         $this->expectException(HttpException::class);
-
-        $this->invokeMiddleware(
-            new User(['role' => 'member']),
-            'admin'
-        );
+        $this->run(new User(['role' => 'member']), 'admin');
     }
 
     public function test_rejects_guest(): void
     {
         $this->expectException(HttpException::class);
-
-        $this->invokeMiddleware(null, 'admin');
+        $this->run(null, 'admin');
     }
 }

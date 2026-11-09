@@ -41,11 +41,3 @@ Thumbs.db
 /coverage-html/
 /.trivy-cache/
 /trivy-results.sarif
-
-# Database lokal
-/database/*.sqlite
-/database/*.sqlite-*
-
-# File environment
-.env.*
-!.env.example
