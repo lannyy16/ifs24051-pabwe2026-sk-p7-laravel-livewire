@@ -13,7 +13,8 @@
                 <div class="flex h-32 w-32 items-center justify-center rounded bg-slate-100 text-4xl">📦</div>
             @endif
             <form wire:submit="saveCover" class="space-y-2 text-sm">
-                <input type="file" wire:model="cover" accept="image/*">
+                <label for="detail-cover" class="block font-medium">Pilih gambar cover</label>
+                <input id="detail-cover" type="file" wire:model="cover" accept="image/*">
                 @error('cover') <p class="text-red-600">{{ $message }}</p> @enderror
                 <div class="flex gap-2">
                     <button type="submit" class="rounded bg-slate-800 px-3 py-1 text-white">Unggah cover</button>
@@ -37,9 +38,9 @@
                 <div class="rounded bg-slate-50 p-3">
                     <div class="text-xs text-slate-500">Quantity</div>
                     <div class="mt-1 flex items-center gap-2 text-lg font-semibold">
-                        <button wire:click="adjust(-1)" class="h-7 w-7 rounded bg-slate-200 hover:bg-slate-300">−</button>
+                        <button wire:click="adjust(-1)" aria-label="Kurangi quantity" class="h-7 w-7 rounded bg-slate-200 hover:bg-slate-300">−</button>
                         {{ $stock->quantity }} {{ $stock->unit }}
-                        <button wire:click="adjust(1)" class="h-7 w-7 rounded bg-slate-200 hover:bg-slate-300">+</button>
+                        <button wire:click="adjust(1)" aria-label="Tambah quantity" class="h-7 w-7 rounded bg-slate-200 hover:bg-slate-300">+</button>
                     </div>
                 </div>
                 <div class="rounded bg-slate-50 p-3"><div class="text-xs text-slate-500">Harga</div>
@@ -66,22 +67,22 @@
         @else
             <form wire:submit="save" class="space-y-3">
                 <div>
-                    <label class="block text-sm font-medium">Nama</label>
-                    <input type="text" wire:model="name" class="w-full rounded border border-slate-300 px-3 py-2">
+                    <label for="detail-name" class="block text-sm font-medium">Nama</label>
+                    <input id="detail-name" type="text" wire:model="name" class="w-full rounded border border-slate-300 px-3 py-2">
                     @error('name') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     @foreach ([['sku','SKU','text'],['unit','Satuan','text'],['quantity','Quantity','number'],['min_stock','Stok minimum','number'],['price','Harga (Rp)','number']] as [$f,$l,$t])
                         <div>
-                            <label class="block text-sm font-medium">{{ $l }}</label>
-                            <input type="{{ $t }}" @if($t==='number') min="0" step="any" @endif wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
+                            <label for="detail-{{ $f }}" class="block text-sm font-medium">{{ $l }}</label>
+                            <input id="detail-{{ $f }}" type="{{ $t }}" @if($t==='number') min="0" step="any" @endif wire:model="{{ $f }}" class="w-full rounded border border-slate-300 px-3 py-2">
                             @error($f) <p class="text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
                     @endforeach
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium">Deskripsi (Markdown)</label>
+                    <span id="detail-description-label" class="block text-sm font-medium">Deskripsi (Markdown)</span>
                     <div wire:ignore
                          x-data="{ editor: null }"
                          x-init="
@@ -109,8 +110,9 @@
 </div>
 
 @push('styles')
-    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"></noscript>
 @endpush
 @push('scripts')
-    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
 @endpush

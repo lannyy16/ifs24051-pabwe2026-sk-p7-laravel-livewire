@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? config('app.name') }} · {{ config('app.name') }}</title>
+    <meta name="description" content="{{ $description ?? 'Aplikasi Stock Barang untuk mengelola stok, harga, dan inventaris dengan mudah, cepat, dan aman.' }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

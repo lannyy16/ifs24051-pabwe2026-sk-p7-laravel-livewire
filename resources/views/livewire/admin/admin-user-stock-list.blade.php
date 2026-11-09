@@ -4,9 +4,9 @@
     <p class="mb-4 text-sm text-slate-500">{{ '@'.$user->username }} · mode hanya-baca</p>
 
     <div class="mb-4 flex flex-wrap gap-2">
-        <input type="search" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…"
+        <input type="search" wire:model.live.debounce.300ms="search" placeholder="Cari nama / SKU…" aria-label="Cari nama atau SKU"
                class="w-64 rounded border border-slate-300 px-3 py-2 text-sm">
-        <select wire:model.live="status" class="rounded border border-slate-300 px-3 py-2 text-sm">
+        <select wire:model.live="status" aria-label="Filter status stok" class="rounded border border-slate-300 px-3 py-2 text-sm">
             <option value="">Semua status</option>
             @foreach ($statuses as $s)
                 <option value="{{ $s->value }}">{{ $s->label() }}</option>

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
+use Livewire\Livewire;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::policy(Stock::class, StockPolicy::class);
+
+        // livewire.js dimuat dengan defer agar tidak memblokir render pertama (Lighthouse: render-blocking).
+        Livewire::useScriptTagAttributes(['defer' => true]);
 
         RateLimiter::for('1000-per-second', fn (Request $request) => Limit::perSecond(1000)
             ->by($request->user()?->id ?: $request->ip()));
